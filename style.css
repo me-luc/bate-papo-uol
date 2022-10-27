@@ -173,5 +173,9 @@ button {
 	display: none;
 }
 
+.new-message {
+	background: rgba(88, 212, 88, 0.5);
+}
+
 @media (max-width: 680px) {
 }
