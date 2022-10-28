@@ -1,5 +1,3 @@
-//variável que receberá imagens do servidor
-let messages = [];
 let user;
 
 function enterPage() {
@@ -14,7 +12,11 @@ function enterPage() {
 		}
 	);
 
-	promise.then(function showMainPage() {
+	promise.then(function showMainPage(answer) {
+		if (answer.status === 200) {
+			document.querySelector(".input-user p").classList.add("hide");
+			console.log("SUCCESS LOGIN");
+		}
 		//exibindo a pagina principal e escondendo a pagina de input nome
 		document.querySelector(".username-page").classList.add("hide");
 		document.querySelector(".main-page").classList.remove("hide");
@@ -24,7 +26,11 @@ function enterPage() {
 		//manter conexao do usuarui
 		setInterval(keepConection, 5000);
 	});
-	promise.catch(console.log("erro na primeira tentativa"));
+	promise.catch(function errorCatch(error) {
+		if (error.response.status === 400) {
+			document.querySelector(".input-user p").classList.remove("hide");
+		}
+	});
 }
 
 function keepConection() {
@@ -41,6 +47,62 @@ function keepConection() {
 
 function showSideBar() {
 	document.querySelector(".sidebar-page").classList.toggle("hide");
+
+	//renderizar participantes
+	const promise = axios.get(
+		"https://mock-api.driven.com.br/api/v6/uol/participants"
+	);
+	promise.then(renderParticipants);
+}
+
+function renderParticipants(answer) {
+	const participants = answer.data;
+	const participantsScreen = document.querySelector(".participants");
+
+	//começando com a opção todos
+	participantsScreen.innerHTML = `
+		<div class="person" onclick="changePrivacy(this)">
+			<div class="box">
+				<ion-icon
+					class="icon-options"
+					name="people"></ion-icon>
+				<p class="toUsername">Todos</p>
+			</div>
+			<ion-icon
+				class="icon-options check selected"
+				name="checkbox"></ion-icon>
+		</div>
+	`;
+
+	for (let i = 0; i < participants.length; i++) {
+		participantsScreen.innerHTML += `
+			<div class="person" onclick="changePrivacy(this)">
+				<div class="box">
+					<ion-icon
+						class="icon-options" onclick="changePrivacy(this)"
+						name="person-circle-outline"></ion-icon>
+					<p>${participants[i].name}</p>
+				</div>
+				<ion-icon
+					class="icon-options check hide"
+					name="checkbox"></ion-icon>
+			</div>		
+		`;
+	}
+}
+
+//MUDANDO PRIVACIDADE
+function changePrivacy(element) {
+	const previousSelection = document.querySelector(".selected");
+	const child = element.lastElementChild;
+
+	if (previousSelection == null) {
+		child.classList.remove("hide");
+		child.classList.add("selected");
+	} else {
+		child.classList.add("hide");
+		child.classList.remove("selected");
+	}
 }
 
 function getMessages() {
@@ -52,11 +114,12 @@ function getMessages() {
 }
 
 function renderMessages(answer) {
-	messages = answer.data;
+	const messages = answer.data;
 	console.log(messages);
 	const screenMessages = document.querySelector(".messages-section");
+	screenMessages.innerHTML = "";
 
-	for (let i = 0; i < messages.length; i++) {
+	for (let i = 70; i < messages.length; i++) {
 		//definindo variaveis que vão ser alteradas ao longo do projeto
 		let messageId,
 			detail = "";
@@ -65,9 +128,14 @@ function renderMessages(answer) {
 		let from = messages[i].from;
 		let to = messages[i].to;
 		let text = messages[i].text;
+		let type = messages[i].type;
 
-		//se mensagem for pra usário ela é mostrada
-		if (to === user || to === "Todos") {
+		//filtro: se mensagem for privada usário ela é mostrada
+		if (
+			type === "message" ||
+			(type == "private_message" && to == user) ||
+			to == "Todos"
+		) {
 			if (
 				messages[i].text.includes("entra") ||
 				messages[i].text.includes("sai")
@@ -90,10 +158,15 @@ function renderMessages(answer) {
 				<span class="message-text"> ${text}</span>
 			</div>
 		`;
+		} else {
+			console.log(`---- ${type} MESSAGE NOT DIRECTED TO ${user}
+			message from ${from} to ${to} -> ${text}`);
 		}
 	}
 
 	const lastMessage = screenMessages.lastElementChild;
+	//add new message effet
+	lastMessage.classList.add("new-message");
 	lastMessage.scrollIntoView();
 }
 

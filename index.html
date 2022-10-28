@@ -27,6 +27,7 @@
 					type="text"
 					placeholder="Digite seu nome"
 					data-identifier="enter-name" />
+				<p class="hide">Usuário já existe! Tente outro nome</p>
 				<button data-identifier="start" onclick="enterPage()">
 					Entrar
 				</button>
@@ -55,7 +56,38 @@
 
 		<!--== SIDEBAR MENU ==-->
 		<div class="sidebar-page hide">
-			<div class="sidebar">SIDEBAR</div>
+			<div class="sidebar">
+				<div class="blur" onclick="showSideBar()"></div>
+				<ion-icon
+					class="close-icon"
+					name="close-circle-outline"
+					onclick="showSideBar()"></ion-icon>
+				<p class="title">Escolha um contato para enviar mensagem:</p>
+				<div class="participants"></div>
+				<p class="title">Escolha a visibilidade:</p>
+				<div class="public privacy-option">
+					<div class="box">
+						<ion-icon
+							class="icon-options"
+							name="lock-open"></ion-icon>
+						<p>Público</p>
+					</div>
+					<ion-icon
+						class="icon-options check"
+						name="checkbox"></ion-icon>
+				</div>
+				<div class="private privacy-option">
+					<div class="box">
+						<ion-icon
+							class="icon-options"
+							name="lock-closed"></ion-icon>
+						<p>Reservadamente</p>
+					</div>
+					<ion-icon
+						class="icon-options check"
+						name="checkbox"></ion-icon>
+				</div>
+			</div>
 		</div>
 
 		<script

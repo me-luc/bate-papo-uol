@@ -61,6 +61,10 @@ footer ion-icon {
 	font-size: 30px;
 }
 
+ion-icon {
+	cursor: pointer;
+}
+
 header,
 footer {
 	width: 100%;
@@ -73,7 +77,8 @@ header .logo {
 }
 
 .username-page {
-	width: 100%;
+	width: 100vw;
+	height: 100vh;
 	background-color: #ffffff;
 	display: flex;
 	flex-direction: column;
@@ -98,6 +103,11 @@ header .logo {
 	height: 45px;
 	border: none;
 	color: #696969;
+}
+.input-user p {
+	color: tomato;
+	margin-bottom: 15px;
+	font-weight: 700;
 }
 .input-user input,
 button {
@@ -129,6 +139,7 @@ button {
 	padding: 12px 8px;
 	background-color: #ffffff;
 	border-radius: 2px;
+	transition: background-color 0.5s ease;
 }
 
 .fromWho,
@@ -140,24 +151,40 @@ button {
 	color: #aaaaaa;
 }
 
-.sidebar-page {
-	width: 100%;
-	height: 100%;
-	position: absolute;
+.blur {
+	width: calc(100vw - 280px);
+	height: 100vh;
+	position: fixed;
 	background: rgba(0, 0, 0, 0.6);
 	top: 0;
-	z-index: 1;
+	left: 0;
 }
 
 .sidebar {
-	width: 260px;
-	height: 100vh;
-	background-color: yellowgreen;
+	width: 280px;
+	height: 100%;
+	background-color: #ffffff;
 
 	z-index: 1;
 	position: fixed;
 	top: 0;
 	right: 0;
+
+	text-align: center;
+	overflow-y: auto;
+
+	box-sizing: border-box;
+	padding: 20px;
+}
+
+.title {
+	font-weight: 700;
+	margin: 20px 0;
+}
+
+.close-icon {
+	font-size: 50px;
+	float: center;
 }
 /*--> ROOM STATUS <--*/
 #log-in-out {
@@ -170,13 +197,41 @@ button {
 	background-color: #ffffff;
 }
 
+.new-message {
+	background-color: tomato;
+}
+
 .hide {
 	display: none;
 }
 
-.new-message {
-	background: rgba(88, 212, 88, 0.5);
+.person,
+.privacy-option {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	margin-bottom: 10px;
+}
+.icon-options {
+	font-size: 30px;
+}
+.box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.check {
+	color: yellowgreen;
+	font-weight: 700;
 }
 
-@media (max-width: 680px) {
+.privacy-option,
+.person:hover {
+	cursor: pointer;
+}
+
+.selected {
+	display: block;
 }
