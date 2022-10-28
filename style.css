@@ -118,6 +118,7 @@ button {
 .messages-section {
 	width: 100%;
 	margin-top: 100px;
+	margin-bottom: 100px;
 }
 
 .message {
@@ -160,7 +161,7 @@ button {
 }
 /*--> ROOM STATUS <--*/
 #log-in-out {
-	background-color: #aaaaaa;
+	background-color: #dcdcdc;
 }
 #private {
 	background-color: #ffdede;
