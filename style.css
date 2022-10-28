@@ -212,10 +212,11 @@ button {
 	align-items: center;
 	justify-content: space-between;
 
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 .icon-options {
 	font-size: 30px;
+	margin-right: 10px;
 }
 .box {
 	display: flex;
@@ -230,8 +231,4 @@ button {
 .privacy-option,
 .person:hover {
 	cursor: pointer;
-}
-
-.selected {
-	display: block;
 }

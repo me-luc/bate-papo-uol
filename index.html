@@ -64,8 +64,10 @@
 					onclick="showSideBar()"></ion-icon>
 				<p class="title">Escolha um contato para enviar mensagem:</p>
 				<div class="participants"></div>
+
+				<!--===OPÇÕES DE PRIVACIDADE===-->
 				<p class="title">Escolha a visibilidade:</p>
-				<div class="public privacy-option">
+				<div class="privacy-option selected" id="Todos">
 					<div class="box">
 						<ion-icon
 							class="icon-options"
@@ -76,7 +78,7 @@
 						class="icon-options check"
 						name="checkbox"></ion-icon>
 				</div>
-				<div class="private privacy-option">
+				<div class="privacy-option" id="reservadamente">
 					<div class="box">
 						<ion-icon
 							class="icon-options"
@@ -84,7 +86,7 @@
 						<p>Reservadamente</p>
 					</div>
 					<ion-icon
-						class="icon-options check"
+						class="icon-options check hide"
 						name="checkbox"></ion-icon>
 				</div>
 			</div>

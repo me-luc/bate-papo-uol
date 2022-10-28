@@ -61,7 +61,7 @@ function renderParticipants(answer) {
 
 	//começando com a opção todos
 	participantsScreen.innerHTML = `
-		<div class="person" onclick="changePrivacy(this)">
+		<div class="person selected" onclick="changeToWho(this)">
 			<div class="box">
 				<ion-icon
 					class="icon-options"
@@ -69,14 +69,14 @@ function renderParticipants(answer) {
 				<p class="toUsername">Todos</p>
 			</div>
 			<ion-icon
-				class="icon-options check selected"
+				class="icon-options check"
 				name="checkbox"></ion-icon>
 		</div>
 	`;
 
 	for (let i = 0; i < participants.length; i++) {
 		participantsScreen.innerHTML += `
-			<div class="person" onclick="changePrivacy(this)">
+			<div class="person" onclick="changeToWho(this)">
 				<div class="box">
 					<ion-icon
 						class="icon-options" onclick="changePrivacy(this)"
@@ -91,18 +91,18 @@ function renderParticipants(answer) {
 	}
 }
 
-//MUDANDO PRIVACIDADE
-function changePrivacy(element) {
-	const previousSelection = document.querySelector(".selected");
-	const child = element.lastElementChild;
+//MUDANDO DESTINATARIO
+function changeToWho(element) {
+	const previousSelection = document.querySelector(".participants .selected");
+	const previousIcon = previousSelection.lastElementChild;
+	const icon = element.lastElementChild;
 
-	if (previousSelection == null) {
-		child.classList.remove("hide");
-		child.classList.add("selected");
-	} else {
-		child.classList.add("hide");
-		child.classList.remove("selected");
-	}
+	//pega o elemento anterior e remove selecionado \ esconde o icone check
+	previousSelection.classList.remove("selected");
+	previousIcon.classList.add("hide");
+	//pega o elemento atual e marca selecionado \ amostra o icone check
+	element.classList.add("selected");
+	icon.classList.remove("hide");
 }
 
 function getMessages() {
@@ -188,5 +188,18 @@ function sendMessage() {
 		console.log("message sent successfully");
 		input.value = "";
 	});
-	promise.catch("error while trying to send message");
+	promise.catch(function catchError() {
+		//pegar possiveis erros
+
+		alert("Erro ao enviar mensagem, você foi desconectado do chat");
+		window.location.reload();
+	});
 }
+
+document
+	.querySelector("footer input")
+	.addEventListener("keypress", function (event) {
+		if (event.key === "Enter") {
+			sendMessage();
+		}
+	});
