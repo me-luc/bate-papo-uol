@@ -1,5 +1,8 @@
 let user;
+let userTo = "Todos";
+let messageType = "message";
 
+/* ===== FUNÇÃO INICIAL P/ ENTRAR EM PÁGINA ===== */
 function enterPage() {
 	let name = document.querySelector(".input-user input").value;
 	//definindo nome do usuario pra variavel global
@@ -23,7 +26,7 @@ function enterPage() {
 		//pegar mensagens e renderizar e atualizar a cada 3 segundos
 		getMessages();
 		setInterval(getMessages, 3000);
-		//manter conexao do usuarui
+		//manter conexao do usuario
 		setInterval(keepConection, 5000);
 	});
 	promise.catch(function errorCatch(error) {
@@ -33,6 +36,7 @@ function enterPage() {
 	});
 }
 
+/* ===== MANTER CONEXÃO DO USUÁRIO ATIVA ===== */
 function keepConection() {
 	const obj = {
 		name: user,
@@ -45,6 +49,7 @@ function keepConection() {
 	promise.catch(console.log("failed to keep user conected"));
 }
 
+/* ===== EXIBIR MENU LATERAL ===== */
 function showSideBar() {
 	document.querySelector(".sidebar-page").classList.toggle("hide");
 
@@ -55,6 +60,7 @@ function showSideBar() {
 	promise.then(renderParticipants);
 }
 
+/* ===== RENDERIZAR PARTE DOS PARTICIPANTES ===== */
 function renderParticipants(answer) {
 	const participants = answer.data;
 	const participantsScreen = document.querySelector(".participants");
@@ -75,7 +81,10 @@ function renderParticipants(answer) {
 	`;
 
 	for (let i = 0; i < participants.length; i++) {
-		participantsScreen.innerHTML += `
+		//checar se participante não é o proprio usuário
+		//participants[i].name !== user
+		if (true) {
+			participantsScreen.innerHTML += `
 			<div class="person" onclick="changeToWho(this)">
 				<div class="box">
 					<ion-icon
@@ -88,23 +97,11 @@ function renderParticipants(answer) {
 					name="checkbox"></ion-icon>
 			</div>		
 		`;
+		}
 	}
 }
 
-//MUDANDO DESTINATARIO
-function changeToWho(element) {
-	const previousSelection = document.querySelector(".participants .selected");
-	const previousIcon = previousSelection.lastElementChild;
-	const icon = element.lastElementChild;
-
-	//pega o elemento anterior e remove selecionado \ esconde o icone check
-	previousSelection.classList.remove("selected");
-	previousIcon.classList.add("hide");
-	//pega o elemento atual e marca selecionado \ amostra o icone check
-	element.classList.add("selected");
-	icon.classList.remove("hide");
-}
-
+/* ===== PEGAR MENSAGENS DO SEVRIDOR ===== */
 function getMessages() {
 	const promise = axios.get(
 		"https://mock-api.driven.com.br/api/v6/uol/messages"
@@ -113,13 +110,14 @@ function getMessages() {
 	promise.catch("error while trying get messages");
 }
 
+/* ===== RENDERIZAR MENSAGENS =====*/
 function renderMessages(answer) {
 	const messages = answer.data;
 	console.log(messages);
 	const screenMessages = document.querySelector(".messages-section");
 	screenMessages.innerHTML = "";
 
-	for (let i = 70; i < messages.length; i++) {
+	for (let i = 60; i < messages.length; i++) {
 		//definindo variaveis que vão ser alteradas ao longo do projeto
 		let messageId,
 			detail = "";
@@ -130,19 +128,21 @@ function renderMessages(answer) {
 		let text = messages[i].text;
 		let type = messages[i].type;
 
+		//formatando tempo
+		let hour = time.substring(0, 2);
+		time = time.replace(hour, Number(hour) + 9);
+
 		//filtro: se mensagem for privada usário ela é mostrada
 		if (
 			type === "message" ||
 			(type == "private_message" && to == user) ||
-			to == "Todos"
+			to == "Todos" ||
+			from == user
 		) {
-			if (
-				messages[i].text.includes("entra") ||
-				messages[i].text.includes("sai")
-			) {
+			if (text.includes("entra") || text.includes("sai")) {
 				messageId = "log-in-out";
 				to = "";
-			} else if (messages[i].text.includes("reservadamente")) {
+			} else if (type == "private_message") {
 				messageId = "private";
 				detail = " reservadamente para ";
 			} else {
@@ -170,14 +170,15 @@ function renderMessages(answer) {
 	lastMessage.scrollIntoView();
 }
 
+/* ======= SEND MESSAGE ======= */
 function sendMessage() {
 	const input = document.querySelector("footer input");
 
 	const object = {
 		from: user,
-		to: "Todos",
+		to: userTo,
 		text: input.value,
-		type: "message",
+		type: messageType,
 	};
 
 	const promise = axios.post(
@@ -188,14 +189,56 @@ function sendMessage() {
 		console.log("message sent successfully");
 		input.value = "";
 	});
-	promise.catch(function catchError() {
+	promise.catch(function catchError(answer) {
 		//pegar possiveis erros
-
-		alert("Erro ao enviar mensagem, você foi desconectado do chat");
+		//desconctar porcausa de erro inreconhecivel
+		alert(`Erro ${answer.response.status}! Você foi desconectado do chat`);
 		window.location.reload();
 	});
 }
 
+/* ===== MUDANDO PRIVACIDADE ===== */
+function changePrivacy(element) {
+	//pegar seleção anterior
+	const previousSelection = document.querySelector(
+		".privacy-options .selected"
+	);
+	const previousIcon = previousSelection.lastElementChild;
+	const icon = element.lastElementChild;
+
+	//pega o elemento anterior e remove selecionado \ esconde o icone check
+	previousSelection.classList.remove("selected");
+	previousIcon.classList.add("hide");
+	//pega o elemento atual e marca selecionado \ amostra o icone check
+	element.classList.add("selected");
+	icon.classList.remove("hide");
+
+	const current = document.querySelector(".privacy-options .selected p");
+	if (current.innerHTML == "Público") {
+		messageType = "message";
+	}
+	if (current.innerHTML == "Reservadamente") {
+		messageType = "private_message";
+	}
+}
+
+/* ===== MUDANDO DESTINATARIO ===== */
+function changeToWho(element) {
+	const previousSelection = document.querySelector(".participants .selected");
+	const previousIcon = previousSelection.lastElementChild;
+	const icon = element.lastElementChild;
+
+	//pega o elemento anterior e remove selecionado \ esconde o icone check
+	previousSelection.classList.remove("selected");
+	previousIcon.classList.add("hide");
+	//pega o elemento atual e marca selecionado \ amostra o icone check
+	element.classList.add("selected");
+	icon.classList.remove("hide");
+
+	userTo = element.querySelector("p").innerHTML;
+}
+
+/* ===== INSERIR MENSAGEM COM ENTER ===== */
 document
 	.querySelector("footer input")
 	.addEventListener("keypress", function (event) {

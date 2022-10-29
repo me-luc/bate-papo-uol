@@ -169,8 +169,6 @@ button {
 	position: fixed;
 	top: 0;
 	right: 0;
-
-	text-align: center;
 	overflow-y: auto;
 
 	box-sizing: border-box;
@@ -181,10 +179,13 @@ button {
 	font-weight: 700;
 	margin: 20px 0;
 }
+.title,
+.close-icon {
+	text-align: center;
+}
 
 .close-icon {
 	font-size: 50px;
-	float: center;
 }
 /*--> ROOM STATUS <--*/
 #log-in-out {
@@ -218,10 +219,13 @@ button {
 	font-size: 30px;
 	margin-right: 10px;
 }
+.person p {
+	overflow: hidden;
+	width: 145px;
+}
 .box {
 	display: flex;
 	align-items: center;
-	justify-content: center;
 }
 .check {
 	color: yellowgreen;
