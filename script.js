@@ -1,7 +1,6 @@
 let user;
 let userTo = "Todos";
 let messageType = "message";
-let detail = "Público";
 
 /* ===== FUNÇÃO INICIAL P/ ENTRAR EM PÁGINA ===== */
 function enterPage() {
@@ -37,13 +36,18 @@ function enterPage() {
 	});
 }
 
+/* ===== ATUALIZAR DETALHES DA MENSAGEM ===== */
 function updateMessageDetail() {
 	const detailMessage = document.querySelector("footer p");
-	const userTo = this.userTo;
-	console.log(userTo);
-	detailMessage.innerHTML = ``;
+	let detail;
+	if (messageType == "private_message") {
+		detail = "reservadamente";
+	} else {
+		detail = "público";
+	}
+
+	detailMessage.innerHTML = `Escrevendo (${detail}) para ${userTo}`;
 }
-updateMessageDetail();
 
 /* ===== MANTER CONEXÃO DO USUÁRIO ATIVA ===== */
 function keepConection() {
@@ -67,12 +71,15 @@ function showSideBar() {
 		"https://mock-api.driven.com.br/api/v6/uol/participants"
 	);
 	promise.then(renderParticipants);
+
+	updateMessageDetail();
 }
 
 /* ===== RENDERIZAR PARTE DOS PARTICIPANTES ===== */
 function renderParticipants(answer) {
 	const participants = answer.data;
 	const participantsScreen = document.querySelector(".participants");
+	const previousSelection = document.querySelector(".person .selected");
 
 	//começando com a opção todos
 	participantsScreen.innerHTML = `
@@ -107,6 +114,9 @@ function renderParticipants(answer) {
 		`;
 		}
 	}
+
+	//atualizando na lista 
+	if(previousSelection)
 }
 
 /* ===== PEGAR MENSAGENS DO SEVRIDOR ===== */
@@ -127,7 +137,7 @@ function renderMessages(answer) {
 
 	for (let i = 0; i < messages.length; i++) {
 		//definindo variaveis que vão ser alteradas ao longo do projeto
-		let messageId;
+		let messageId, detail;
 
 		let time = messages[i].time;
 		let from = messages[i].from;
@@ -151,6 +161,7 @@ function renderMessages(answer) {
 				text.includes("sai da sala...")
 			) {
 				messageId = "log-in-out";
+				detail = "";
 				to = "";
 			} else if (type == "private_message") {
 				messageId = "private";
@@ -230,6 +241,8 @@ function changePrivacy(element) {
 	if (current.innerHTML == "Reservadamente") {
 		messageType = "private_message";
 	}
+
+	updateMessageDetail();
 }
 
 /* ===== MUDANDO DESTINATARIO ===== */
@@ -246,6 +259,8 @@ function changeToWho(element) {
 	icon.classList.remove("hide");
 
 	userTo = element.querySelector("p").innerHTML;
+
+	updateMessageDetail();
 }
 
 /* ===== INSERIR MENSAGEM COM ENTER ===== */
