@@ -1,6 +1,7 @@
 let user;
 let userTo = "Todos";
 let messageType = "message";
+let detail = "Público";
 
 /* ===== FUNÇÃO INICIAL P/ ENTRAR EM PÁGINA ===== */
 function enterPage() {
@@ -35,6 +36,14 @@ function enterPage() {
 		}
 	});
 }
+
+function updateMessageDetail() {
+	const detailMessage = document.querySelector("footer p");
+	const userTo = this.userTo;
+	console.log(userTo);
+	detailMessage.innerHTML = ``;
+}
+updateMessageDetail();
 
 /* ===== MANTER CONEXÃO DO USUÁRIO ATIVA ===== */
 function keepConection() {
@@ -82,10 +91,9 @@ function renderParticipants(answer) {
 
 	for (let i = 0; i < participants.length; i++) {
 		//checar se participante não é o proprio usuário
-		//participants[i].name !== user
-		if (true) {
+		if (participants[i].name !== user) {
 			participantsScreen.innerHTML += `
-			<div class="person" onclick="changeToWho(this)">
+			<div class="person" onclick="changeToWho(this)" data-identifier="participant">
 				<div class="box">
 					<ion-icon
 						class="icon-options" onclick="changePrivacy(this)"
@@ -117,10 +125,9 @@ function renderMessages(answer) {
 	const screenMessages = document.querySelector(".messages-section");
 	screenMessages.innerHTML = "";
 
-	for (let i = 60; i < messages.length; i++) {
+	for (let i = 0; i < messages.length; i++) {
 		//definindo variaveis que vão ser alteradas ao longo do projeto
-		let messageId,
-			detail = "";
+		let messageId;
 
 		let time = messages[i].time;
 		let from = messages[i].from;
@@ -139,7 +146,10 @@ function renderMessages(answer) {
 			to == "Todos" ||
 			from == user
 		) {
-			if (text.includes("entra") || text.includes("sai")) {
+			if (
+				text.includes("entra na sala...") ||
+				text.includes("sai da sala...")
+			) {
 				messageId = "log-in-out";
 				to = "";
 			} else if (type == "private_message") {

@@ -47,10 +47,13 @@
 			<!--== SESSÃO DE MENSAGENS ==-->
 			<section class="messages-section"></section>
 			<footer>
-				<input type="text" placeholder="Escreva aqui..." />
-				<ion-icon
-					onclick="sendMessage()"
-					name="paper-plane-outline"></ion-icon>
+				<div class="message-input">
+					<input type="text" placeholder="Escreva aqui..." />
+					<ion-icon
+						onclick="sendMessage()"
+						name="paper-plane-outline"></ion-icon>
+				</div>
+				<p>detail</p>
 			</footer>
 		</main>
 
@@ -69,6 +72,7 @@
 				<div class="privacy-options">
 					<p class="title">Escolha a visibilidade:</p>
 					<div
+						data-identifier="visibility"
 						class="privacy-option selected"
 						id="Todos"
 						onclick="changePrivacy(this)">
@@ -83,6 +87,7 @@
 							name="checkbox"></ion-icon>
 					</div>
 					<div
+						data-identifier="visibility"
 						class="privacy-option"
 						id="reservadamente"
 						onclick="changePrivacy(this)">
