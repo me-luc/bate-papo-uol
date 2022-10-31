@@ -30,7 +30,6 @@ footer {
 	position: fixed;
 	bottom: 0;
 	left: 0;
-	margin-top: 80px;
 
 	box-sizing: border-box;
 	padding: 27px 15px;
@@ -134,16 +133,18 @@ button {
 
 .main-page {
 	width: 100%;
+	height: 100%;
 }
 
 .messages-section {
 	width: 100%;
-	margin-top: 100px;
-	margin-bottom: 100px;
+	height: auto;
+	margin: 100px 0;
 }
 
 .message {
 	width: 100%;
+	height: auto;
 	margin-bottom: 5px;
 	box-sizing: border-box;
 	padding: 12px 8px;
@@ -153,6 +154,10 @@ button {
 
 	line-height: 1.3;
 	word-wrap: break-word;
+}
+
+.message:last-of-type {
+	margin-bottom: 100px;
 }
 
 .fromWho,

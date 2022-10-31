@@ -79,28 +79,53 @@ function showSideBar() {
 function renderParticipants(answer) {
 	const participants = answer.data;
 	const participantsScreen = document.querySelector(".participants");
-	const previousSelection = document.querySelector(".person .selected");
+	//variavel para guardar seleção anterior
+	const previousSelection = document.querySelector(".person.selected");
 
-	//começando com a opção todos
-	participantsScreen.innerHTML = `
-		<div class="person selected" onclick="changeToWho(this)">
-			<div class="box">
-				<ion-icon
-					class="icon-options"
-					name="people"></ion-icon>
-				<p class="toUsername">Todos</p>
-			</div>
-			<ion-icon
-				class="icon-options check"
-				name="checkbox"></ion-icon>
-		</div>
-	`;
-
+	//lendo array de objetos e inserindo na tela
 	for (let i = 0; i < participants.length; i++) {
+		let aux = "";
+		let userAux = "";
+
+		if (previousSelection !== null) {
+			userAux = previousSelection.innerHTML;
+		}
+
+		//colocando todos na posicao inicial
+		if (i == 0) {
+			let hideAux = "hide";
+			if (
+				previousSelection == null ||
+				previousSelection.innerHTML == "Todos"
+			) {
+				aux = "selected";
+				hideAux = "";
+			}
+
+			participantsScreen.innerHTML = `
+				<div class="person ${aux}" onclick="changeToWho(this)">
+					<div class="box">
+						<ion-icon
+							class="icon-options"
+							name="people"></ion-icon>
+						<p class="toUsername">Todos</p>
+					</div>
+					<ion-icon
+						class="icon-options check ${hideAux}"
+						name="checkbox">
+					</ion-icon>
+				</div>
+			`;
+			aux = "";
+		}
 		//checar se participante não é o proprio usuário
 		if (participants[i].name !== user) {
+			if (participants[i].name === userAux) {
+				aux = "selected";
+			}
+
 			participantsScreen.innerHTML += `
-			<div class="person" onclick="changeToWho(this)" data-identifier="participant">
+			<div class="person ${aux}" onclick="changeToWho(this)" data-identifier="participant">
 				<div class="box">
 					<ion-icon
 						class="icon-options" onclick="changePrivacy(this)"
@@ -114,9 +139,6 @@ function renderParticipants(answer) {
 		`;
 		}
 	}
-
-	//atualizando na lista 
-	if(previousSelection)
 }
 
 /* ===== PEGAR MENSAGENS DO SEVRIDOR ===== */
