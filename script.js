@@ -195,7 +195,7 @@ function renderMessages(answer) {
 				detail = " para ";
 			}
 			screenMessages.innerHTML += `
-			<div id="${messageId}" class="message">
+			<div id="${messageId}" class="message" data-test="message">
 				<span class="time">${time}</span>
 				<span class="fromWho">${from}</span>
 				<span class="detail">${detail}</span>
