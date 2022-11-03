@@ -26,9 +26,13 @@
 				<input
 					type="text"
 					placeholder="Digite seu nome"
-					data-identifier="enter-name" />
+					data-identifier="enter-name"
+					data-test="input-name" />
 				<p class="hide">Usuário já existe! Tente outro nome</p>
-				<button data-identifier="start" onclick="enterPage()">
+				<button
+					data-identifier="start"
+					data-test="send-name"
+					onclick="enterPage()">
 					Entrar
 				</button>
 			</section>
@@ -40,6 +44,7 @@
 				<img class="logo" src="./images/logo.png" alt="logo image" />
 				<img
 					onclick="showSideBar()"
+					data-test="open-participants"
 					class="people"
 					src="./images/people-icon.png"
 					alt="people icon" />
@@ -55,7 +60,7 @@
 						onclick="sendMessage()"
 						name="paper-plane-outline"></ion-icon>
 				</div>
-				<p>Escrevendo (Público) para Todos</p>
+				<p data-test="recipient">Escrevendo (Público) para Todos</p>
 			</footer>
 		</main>
 
@@ -75,6 +80,7 @@
 					<p class="title">Escolha a visibilidade:</p>
 					<div
 						data-identifier="visibility"
+						data-test="public"
 						class="privacy-option selected"
 						id="Todos"
 						onclick="changePrivacy(this)">
@@ -86,10 +92,12 @@
 						</div>
 						<ion-icon
 							class="icon-options check"
+							data-test="check"
 							name="checkbox"></ion-icon>
 					</div>
 					<div
 						data-identifier="visibility"
+						data-test="private"
 						class="privacy-option"
 						id="reservadamente"
 						onclick="changePrivacy(this)">
@@ -101,6 +109,7 @@
 						</div>
 						<ion-icon
 							class="icon-options check hide"
+							data-test="check"
 							name="checkbox"></ion-icon>
 					</div>
 				</div>

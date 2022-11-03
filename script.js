@@ -103,7 +103,7 @@ function renderParticipants(answer) {
 			}
 
 			participantsScreen.innerHTML = `
-				<div class="person ${aux}" onclick="changeToWho(this)">
+				<div class="person ${aux}" onclick="changeToWho(this)" data-test="all">
 					<div class="box">
 						<ion-icon
 							class="icon-options"
@@ -112,6 +112,7 @@ function renderParticipants(answer) {
 					</div>
 					<ion-icon
 						class="icon-options check ${hideAux}"
+						data-test="check"
 						name="checkbox">
 					</ion-icon>
 				</div>
@@ -134,6 +135,7 @@ function renderParticipants(answer) {
 				</div>
 				<ion-icon
 					class="icon-options check hide"
+					data-test="check"
 					name="checkbox"></ion-icon>
 			</div>		
 		`;

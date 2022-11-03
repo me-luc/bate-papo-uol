@@ -188,6 +188,8 @@ button {
 
 	box-sizing: border-box;
 	padding: 20px;
+
+	transition: all 3s;
 }
 
 .title {
